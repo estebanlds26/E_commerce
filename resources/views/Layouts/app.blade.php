@@ -13,7 +13,13 @@
             <ul>
                 <li><a href="{{ route('home') }}">Inicio</a></li>
                 <li><a href="{{ route('productos.index') }}">Productos</a></li>
-                <li><a href="#">Contacto</a></li>
+                <li><a href="{{ route('categorias.index') }}">Categoria</a></li>
+                @php $categorias = App\Models\Categoria::all(); @endphp
+                @foreach ($categorias as $categoria)
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('productos.filtrar', $categoria->id) }}">{{ $categoria->nombre }}</a>
+                    </li>
+                @endforeach
             </ul>
         </nav>
     </header>

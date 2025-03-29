@@ -43,6 +43,18 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Actualizar Producto</button>
+        <label for="categoria">Categoría:</label>
+        <select name="categoria_id" id="categoria" class="form-control">
+            <option value="">Selecciona una categoría</option>
+            @foreach ($categorias as $categoria)
+                <option value="{{ $categoria->id }}" 
+                    {{ old('categoria_id', isset($producto) ? $producto->categoria_id : '') == $categoria->id ? 'selected' : '' }}>
+                    {{ $categoria->nombre }}
+                </option>
+            @endforeach
+        </select>
+
+
     </form>
 </div>
 @endsection

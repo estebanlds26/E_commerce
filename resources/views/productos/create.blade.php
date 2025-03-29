@@ -37,7 +37,20 @@
             <input type="file" class="form-control" id="imagen" name="imagen">
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar Producto</button>
+        <button type="submit" style="background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;text-decoration: none;
+         onmouseover="this.style.backgroundColor='#2980b9'" 
+         onmouseout="this.style.backgroundColor='#3498db'">Guardar Producto</button>
+        <label for="categoria">Categoría:</label>
+        <select name="categoria_id" id="categoria" class="form-control">
+            <option value="">Selecciona una categoría</option>
+            @foreach ($categorias as $categoria)
+                <option value="{{ $categoria->id }}" 
+                    {{ old('categoria_id', isset($producto) ? $producto->categoria_id : '') == $categoria->id ? 'selected' : '' }}>
+                    {{ $categoria->nombre }}
+                </option>
+            @endforeach
+        </select>
+        
     </form>
 </div>
 @endsection

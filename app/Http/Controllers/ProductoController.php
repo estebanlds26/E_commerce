@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Categoria;
 
 
 class ProductoController extends Controller
@@ -19,9 +20,10 @@ class ProductoController extends Controller
 
     public function create()
     {
-        return view('productos.create'); // Muestra el formulario
+        $categorias = Categoria::all(); // Obtener todas las categorías
+        return view('productos.create', compact('categorias'));
     }
-    
+        
     public function store(Request $request)
     {
         // Validar datos
@@ -29,7 +31,8 @@ class ProductoController extends Controller
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'precio' => 'required|numeric',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'categoria_id' => 'nullable|exists:categorias,id'
         ]);
     
         // Subir imagen si existe
@@ -43,14 +46,17 @@ class ProductoController extends Controller
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
             'precio' => $request->precio,
-            'imagen' => $rutaImagen
+            'imagen' => $rutaImagen,
+            'categoria_id' => $request->categoria_id
         ]);
-    
+        Producto::create($request->all());
+
         return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente');
     }
     
     public function edit(Producto $producto)
 {
+    $categorias = Categoria::all();
     return view('productos.edit', compact('producto'));
 }
 
@@ -60,7 +66,8 @@ class ProductoController extends Controller
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'precio' => 'required|numeric',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'categoria_id' => 'nullable|exists:categorias,id'
         ]);
 
         // Si hay nueva imagen, se guarda y se borra la anterior
@@ -80,8 +87,10 @@ class ProductoController extends Controller
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
             'precio' => $request->precio,
-            'imagen' => $producto->imagen
+            'imagen' => $producto->imagen,
+            'categoria_id' => $request->categoria_id
         ]);
+        $producto->update($request->all());
 
         return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
     }
@@ -97,5 +106,13 @@ class ProductoController extends Controller
 
         return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
     }
-
+    public function filtrarPorCategoria($categoria_id)
+    {
+        $productos = Producto::where('categoria_id', $categoria_id)->paginate(10);
+        $categorias = Categoria::all();
+        $categoriaSeleccionada = Categoria::find($categoria_id);
+    
+        return view('productos.index', compact('productos', 'categorias', 'categoriaSeleccionada'));
+    }
+    
     }
