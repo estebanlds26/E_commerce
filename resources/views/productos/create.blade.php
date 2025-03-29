@@ -36,14 +36,6 @@
             <label for="imagen" class="form-label">Imagen del Producto</label>
             <input type="file" class="form-control" id="imagen" name="imagen">
         </div>
-                <label for="categoria_id">Categoría</label>
-        <select name="categoria_id" id="categoria_id" class="form-control">
-            <option value="">Seleccione una categoría</option>
-            @foreach($categorias as $categoria)
-                <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
-            @endforeach
-        </select>
-
 
         <button type="submit" class="btn btn-primary">Guardar Producto</button>
     </form>

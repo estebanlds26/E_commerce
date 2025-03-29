@@ -42,21 +42,6 @@
             <input type="file" class="form-control mt-2" id="imagen" name="imagen">
         </div>
 
-        <div class="form-group">
-            <label for="categoria_id">Categoría</label>
-            <select name="categoria_id" id="categoria_id" class="form-control">
-                <option value="">-- Selecciona una categoría --</option>
-                @foreach($categorias as $categoria)
-                    <option value="{{ $categoria->id }}" {{ isset($producto) && $producto->categoria_id == $categoria->id ? 'selected' : '' }}>
-                        {{ $categoria->nombre }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-        
-
-
-
         <button type="submit" class="btn btn-primary">Actualizar Producto</button>
     </form>
 </div>
