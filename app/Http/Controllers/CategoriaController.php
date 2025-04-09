@@ -76,4 +76,8 @@ class CategoriaController extends Controller
 
         return redirect()->route('categorias.index')->with('success', 'Categoría eliminada con éxito');
     }
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 }

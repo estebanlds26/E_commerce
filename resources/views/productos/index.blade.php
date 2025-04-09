@@ -1,8 +1,10 @@
 @extends('layouts.app')
 @section('content')
+@auth
 <a href="{{ route('productos.create') }}" style="background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; text-decoration: none;" 
 onmouseover="this.style.backgroundColor='#2980b9'" 
 onmouseout="this.style.backgroundColor='#3498db'">Crear Nuevo Producto</a>
+@endauth
     <div class="container">
         <h1>Lista de Productos</h1>
         @if (isset($categoriaSeleccionada))
@@ -22,6 +24,7 @@ onmouseout="this.style.backgroundColor='#3498db'">Crear Nuevo Producto</a>
                                 <img src="{{ asset('storage/' . $producto->imagen) }}" width="150">
                             @endif
                             <td>
+                                @auth 
                                <br> <br><a href="{{ route('productos.edit', $producto->id) }}" style="background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;text-decoration: none;
                                     onmouseover="this.style.backgroundColor='#2980b9'" 
                             onmouseout="this.style.backgroundColor='#3498db'">Editar</a>
@@ -33,6 +36,7 @@ onmouseout="this.style.backgroundColor='#3498db'">Crear Nuevo Producto</a>
                                     onmouseover="this.style.backgroundColor='#2980b9'" 
                             onmouseout="this.style.backgroundColor='#3498db'" onclick="return confirm('¿Seguro que deseas eliminar este producto?')">Eliminar</button>
                                 </form>
+                                @endauth
                             </td>
                             
                             </div>
@@ -41,4 +45,6 @@ onmouseout="this.style.backgroundColor='#3498db'">Crear Nuevo Producto</a>
             </div>
         @endif
     </div>
+    <div class="pagination">
+        {{ $productos->links('pagination::bootstrap-5') }}
 @endsection

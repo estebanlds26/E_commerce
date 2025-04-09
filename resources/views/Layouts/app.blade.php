@@ -11,7 +11,11 @@
     <header>
         <nav>
             <ul>
-                <li><a href="{{ route('home') }}">Inicio</a></li>
+                @guest
+                <li><a href="{{ route('register') }}">Registrarse</a></li>
+                <li><a href="{{route('login')}}">Iniciar sesión</a></li>
+                @endguest
+                <li><a href="{{ route('home') }}">Home</a></li>
                 <li><a href="{{ route('productos.index') }}">Productos</a></li>
                 <li><a href="{{ route('categorias.index') }}">Categoria</a></li>
                 @php $categorias = App\Models\Categoria::all(); @endphp
@@ -20,6 +24,17 @@
                         <a class="nav-link" href="{{ route('productos.filtrar', $categoria->id) }}">{{ $categoria->nombre }}</a>
                     </li>
                 @endforeach
+                @auth
+                <li>
+                    <a href="#" onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                    Cerrar sesión                
+                    </a>
+                </li>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+                @endauth
             </ul>
         </nav>
     </header>

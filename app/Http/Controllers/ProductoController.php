@@ -12,7 +12,7 @@ class ProductoController extends Controller
     public function index()
     {
          // Obtener todos los productos de la base de datos
-         $productos = Producto::all();
+         $productos = Producto::paginate(2);
 
          // Pasar los productos a la vista
          return view('productos.index', compact('productos'));
@@ -49,7 +49,7 @@ class ProductoController extends Controller
             'imagen' => $rutaImagen,
             'categoria_id' => $request->categoria_id
         ]);
-        Producto::create($request->all());
+        
 
         return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente');
     }
@@ -106,13 +106,17 @@ class ProductoController extends Controller
 
         return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
     }
-    public function filtrarPorCategoria($categoria_id)
+    public function filtrarPorCategoria($categoria)
     {
-        $productos = Producto::where('categoria_id', $categoria_id)->paginate(10);
+        
+        $productos = Producto::where('categoria_id', "=", $categoria)->paginate(10);
         $categorias = Categoria::all();
-        $categoriaSeleccionada = Categoria::find($categoria_id);
+        $categoriaSeleccionada = Categoria::find($categoria);
     
         return view('productos.index', compact('productos', 'categorias', 'categoriaSeleccionada'));
     }
-    
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
     }
+}
